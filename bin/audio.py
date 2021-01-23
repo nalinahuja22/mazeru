@@ -30,6 +30,7 @@ class Audio:
             tempo = librosa.beat.tempo(onset_envelope = onset, sr = sr)
             self.track.append(tempo[0])
         print(np.asarray(self.track))
+        
 
     def plot_audio(self, start_seconds, end_seconds):
         # plot data
