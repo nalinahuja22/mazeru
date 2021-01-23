@@ -2,8 +2,7 @@
 
 import os
 import sys
-import wave as wv
-import audioop as ap
+import librosa
 
 class Audio:
     def __init__(self, audio_file):
@@ -14,10 +13,10 @@ class Audio:
         self.track = []
 
     def analyze(self):
-        wf = wv.open(self.audio_file, "rb")
-        for i in range(w.getnframes()):
-            frame = w.readframes(i)
-            print(ap.rms(frame))
+        data, sr = librosa.load(self.audio_file, mono = False)
 
-obj = Audio("../media/audio/sensation.wav")
+        print(data)
+
+
+obj = Audio("../media/audio/wav/reminisce.wav")
 obj.analyze()
