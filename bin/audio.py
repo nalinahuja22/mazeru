@@ -31,6 +31,19 @@ class Audio:
             self.track.append(tempo[0])
         print(np.asarray(self.track))
 
+    def get_beat_timestamps(self, start_seconds, end_seconds):
+        # get data
+        data, sr = librosa.load(self.afile, offset=start_seconds,duration=end_seconds-start_seconds)
+
+        # calculate PLP sinusoid function to predict beat timestamps
+        onset_env = librosa.onset.onset_strength(y=data, sr=sr)
+        pulse = librosa.beat.plp(onset_envelope=onset_env, sr=sr)
+        beats_plp = np.flatnonzero(librosa.util.localmax(pulse))
+        time = librosa.times_like(pulse, sr=sr) + start_seconds
+
+        # return beat timestamps
+        return time[beats_plp]
+
     def plot_audio(self, start_seconds, end_seconds):
         # plot data
         data, sr = librosa.load(self.afile, offset=start_seconds,duration=end_seconds-start_seconds)
@@ -62,4 +75,5 @@ class Audio:
 
 obj = Audio("../media/audio/sensation.wav")
 # obj.analyze()
-obj.plot_audio(3,5)
+obj.get_beat_timestamps(3,5)
+# obj.plot_audio(3,5)
