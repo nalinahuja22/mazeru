@@ -1,3 +1,6 @@
 # System Files
 .DS_Store
 .localized
+
+# Project Files
+media
