@@ -15,6 +15,10 @@ class Audio:
         # Audio Analysis
         self.track = []
 
+    def analyze(self):
+        self.get_tempo()
+        self.plot_audio()
+
     def get_tempo(self):
         # Audio File Duration
         duration = librosa.get_duration(filename = self.afile)
@@ -31,9 +35,7 @@ class Audio:
     def plot_audio(self, start_seconds, end_seconds):
         # plot data
         data, sr = librosa.load(self.afile, offset=start_seconds,duration=end_seconds-start_seconds)
-        time = np.arange(0,len(data))
-        # time = np.arange(start_seconds,len(data)) / sr
-        print(time)
+        time = (np.arange(0,len(data)) / sr) + start_seconds
         fig, ax = plt.subplots()
         ax.plot(time, data)
         ax.set(xlabel="time", ylabel="sound amplitude")
@@ -41,4 +43,4 @@ class Audio:
 
 obj = Audio("../media/audio/sensation.wav")
 # obj.get_tempo()
-obj.plot_audio(0,10)
+obj.plot_audio(5,30)
