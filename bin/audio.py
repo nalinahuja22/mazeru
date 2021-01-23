@@ -41,6 +41,10 @@ class Audio:
         ax[0].set(title='raw audio')
         ax[0].plot(time, data)
         ax[0].set(ylabel="sound amplitude")
+
+        # print global max sound amplitude
+        print(max(data))
+
         # set up plot for beat timestamp estimation
         onset_env = librosa.onset.onset_strength(y=data, sr=sr)
         pulse = librosa.beat.plp(onset_envelope=onset_env, sr=sr)
