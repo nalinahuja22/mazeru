@@ -17,7 +17,7 @@ class Audio:
 
     def analyze(self):
         self.get_tempo()
-        self.plot_audio()
+        self.plot_audio(0,2)
 
     def get_tempo(self):
         # Audio File Duration
@@ -31,16 +31,34 @@ class Audio:
             self.track.append(tempo[0])
         print(np.asarray(self.track))
 
-
     def plot_audio(self, start_seconds, end_seconds):
         # plot data
         data, sr = librosa.load(self.afile, offset=start_seconds,duration=end_seconds-start_seconds)
         time = (np.arange(0,len(data)) / sr) + start_seconds
-        fig, ax = plt.subplots()
-        ax.plot(time, data)
-        ax.set(xlabel="time", ylabel="sound amplitude")
+        # time = (np.arange(0,len(data)) / sr)
+        fig, ax = plt.subplots(nrows=2, sharex=True)
+        # set up plot for raw audio
+        ax[0].set(title='raw audio')
+        ax[0].plot(time, data)
+        ax[0].set(ylabel="sound amplitude")
+        # set up plot for beat timestamp estimation
+        onset_env = librosa.onset.onset_strength(y=data, sr=sr)
+        pulse = librosa.beat.plp(onset_envelope=onset_env, sr=sr)
+        beats_plp = np.flatnonzero(librosa.util.localmax(pulse))
+        time = librosa.times_like(pulse, sr=sr) + start_seconds
+        # time = librosa.times_like(pulse, sr=sr)
+        ax[1].set(title='estimated beats')
+        ax[1].set(xlabel="time", ylabel="sound amplitude")
+        ax[1].plot(time, librosa.util.normalize(pulse), label='PLP')
+        ax[1].vlines(time[beats_plp], 0, 1, alpha=0.5, color='r', linestyle='--', label='PLP Beats')
+        ax[1].legend()
+
+        # print beat timestamps
+        print(time[beats_plp])
+
+        # show the plots
         plt.show()
 
 obj = Audio("../media/audio/sensation.wav")
-# obj.get_tempo()
-obj.plot_audio(5,30)
+# obj.analyze()
+obj.plot_audio(0,2)
