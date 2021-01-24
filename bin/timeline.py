@@ -14,7 +14,7 @@ class Cut:
         self.o_time = o_time
 
 class Timeline:
-    def __init__(self, a_path, v_path, minfthr, maxfthr):
+    def __init__(self, a_path, v_path):
         # Initialize Media Paths
         self.a_path = a_path
         self.v_path = v_path
@@ -25,8 +25,8 @@ class Timeline:
         self.video_obj = None
 
         # Initialize Cut Thresholds
-        self.minfthr = minfthr
-        self.maxfthr = maxfthr
+        self.min_thr = 1
+        self.max_thr = 31
 
         # Load Media
         self.load_media()
