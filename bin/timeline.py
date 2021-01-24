@@ -4,7 +4,7 @@ import os
 import subprocess
 
 from audio import Audio
-from video import Video
+# from video import Video
 
 # End Imports----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -19,6 +19,11 @@ class Timeline:
         # Initialize Media Paths
         self.a_path = a_path
         self.v_path = v_path
+
+
+        # declare video and audio objects
+        self.audio_obj = None
+        self.video_obj = None
 
         # Initialize Cut Thresholds
         self.min_sec = min_sec
@@ -35,7 +40,8 @@ class Timeline:
         self.audio_obj = Audio(self.a_path)
 
         # Load Video Media
-        self.video_obj = [Video(file) for file in (os.listdir(self.v_path))]
+
+        # self.video_obj = [Video(file) for file in (os.listdir(self.v_path))]
 
     def process_media(self):
         # Process Audio Media
@@ -49,13 +55,8 @@ class Timeline:
 
 
     def render(self):
+        self.audio_obj.analyze()
+        print(len(self.audio_obj.peaks))
 
-
-        self.a_obj.get_peaks(0, self.a_obj.get_audio_duration())
-        # self.beat_timestamps = self.a_obj.get_beat_timestamps(3, 5)
-        print(len(self.beat_timestamps))
-
-obj = Timeline("../media/audio/sensation.wav", "../media/video")
-obj.render()
 
 # End Classes----------------------------------------------------------------------------------------------------------------------------------------------------------
