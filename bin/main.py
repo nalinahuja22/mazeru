@@ -25,9 +25,9 @@ def main():
 
     # Setup Timeline Thresholds
     if args.min_seconds:
-        vid_maker.min_thr = args.min_seconds
+        vid_maker.min_cthr = args.min_seconds
     if args.max_seconds:
-        vid_maker.max_thr = args.max_seconds
+        vid_maker.max_cthr = args.max_seconds
 
     # Render Timeline
     vid_maker.render()
