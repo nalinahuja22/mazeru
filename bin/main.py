@@ -1,6 +1,10 @@
 # Developed by matthew-notaro, nalinahuja22, and ClarkChan1
-from timeline import Timeline
+
 import argparse
+
+from timeline import Timeline
+
+# End Imports----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def main():
     parser = argparse.ArgumentParser()
@@ -22,3 +26,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# End File-------------------------------------------------------------------------------------------------------------------------------------------------------------
