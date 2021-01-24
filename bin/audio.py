@@ -26,7 +26,7 @@ class Audio:
         self.peaks = None
 
     def analyze(self):
-        print("\raudio: processing audio...")
+        print("audio: processing audio...", end = "\r")
 
         # Load Audio File
         wf, sr = librosa.load(self.file)

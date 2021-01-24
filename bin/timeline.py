@@ -61,7 +61,7 @@ class Timeline:
             # (obj).analyze()
 
     def render(self):
-        print("\rtimeline: generating sequence...")
+        print("timeline: generating sequence...", end = "\r")
 
         # Clip Sequence
         seq = []
