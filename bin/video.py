@@ -24,8 +24,7 @@ class Video:
 
     # Returns the subclip of video given starting and ending times
     def cut(self, i_time, o_time):
-        return VideoFileClip(self.file).subclip(i_time, o_time)
-
+        return (VideoFileClip(self.file).subclip(i_time, o_time))
 
     # Populates break_arr with frames at which the scene changes
     def analyze(self):
