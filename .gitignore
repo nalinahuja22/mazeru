@@ -1,7 +1,8 @@
 # System Files
+.idea
 .DS_Store
 .localized
+__pycache__
 
 # Project Files
 media
-.idea
