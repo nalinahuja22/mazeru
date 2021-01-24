@@ -52,6 +52,7 @@ class Timeline:
     def cut(self):
         
 
+
     def render(self):
         self.audio_obj.analyze()
         print(len(self.audio_obj.peaks))
