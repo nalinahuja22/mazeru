@@ -6,4 +6,4 @@
 
 # command python3 ./bin/main.py ${@}
 
-command python3 ./bin/main.py ./media/audio/reminisce.wav ./media/video ./renders/render.mp4 --min-sec 1
+command python3 ./bin/main.py ./media/audio/${1}.wav ./media/video/${2} ./renders/${3}.mp4 --min-sec 2

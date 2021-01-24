@@ -7,6 +7,8 @@ from audio import Audio
 from video import Video
 from moviepy.editor import *
 
+random.seed(os.urandom(1024))
+
 # End Imports----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 MIN_CUT_THRESHOLD = 1
@@ -59,9 +61,7 @@ class Timeline:
             # (obj).analyze()
 
     def render(self):
-        print("fabricating the matrix..")
-
-        print("audio path: " + self.a_path)
+        print("timeline: generating sequence...", end = "\r")
 
         # Clip Sequence
         seq = []
@@ -72,9 +72,6 @@ class Timeline:
         # Sequence Duration
         duration = 0
 
-        print("peaks: " + str(self.audio_obj.peaks))
-        print("sr: " + str(self.audio_obj.sample_rate))
-
         # Iterate Over Audio Peaks
         for peak in self.audio_obj.peaks:
             # Compute Time Values
@@ -82,31 +79,23 @@ class Timeline:
             t_start = lpeak / self.audio_obj.sample_rate
             t_delta = (t_end - t_start)
 
-            print("delta: " + str(t_delta))
-            print("peak: " + str(peak))
-            print("lpeak: " + str(lpeak))
-
             # Verify Clip Duration
             if (t_delta < self.min_cthr):
-                print("threshold violation")
                 continue
 
             # Ensure Clips Exist
             if (not(self.video_obj)):
-                print("run out of clips")
                 break
 
             # Video Object
             video_clip = self.video_obj.pop(0)
 
             if (t_delta > video_clip.get_duration()):
-                print("reselecting clip")
                 # Iterate Over Remaining Clips
                 for i in range(1, len(self.video_obj)):
                     # Optimize Video Clip
                     if (t_delta <= self.video_obj[i].get_duration()):
                         video_clip = self.video_obj[i]
-                        print("clip found")
                         break
 
             # Append Trimmed Clip To Sequence
@@ -118,15 +107,12 @@ class Timeline:
             # Update Parameters
             lpeak = peak
 
-        print("he is the one")
+        print("timeline: sequence generated    ")
 
         # Render Video
         seq = concatenate_videoclips(seq)
-
         seq = seq.set_audio(AudioFileClip(self.a_path))
-
         seq = seq.subclip(0, duration)
-
         seq.write_videofile(self.o_path)
 
 # End Classes----------------------------------------------------------------------------------------------------------------------------------------------------------
