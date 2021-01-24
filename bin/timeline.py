@@ -70,7 +70,7 @@ class Timeline:
         lpeak = 0
 
         # Sequence Duration
-        duration
+        duration = 0
 
         print("peaks: " + str(self.audio_obj.peaks))
         print("sr: " + str(self.audio_obj.sample_rate))
@@ -113,6 +113,8 @@ class Timeline:
             print(str(0), str(t_delta))
             seq.append(video_clip.cut(0, t_delta))
 
+            duration += t_delta
+
             # Update Parameters
             lpeak = peak
 
@@ -123,7 +125,7 @@ class Timeline:
 
         seq = seq.set_audio(AudioFileClip(self.a_path))
 
-
+        seq = seq.subclip(0, duration)
 
         seq.write_videofile(self.o_path)
 
