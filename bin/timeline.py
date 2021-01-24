@@ -1,14 +1,17 @@
 # Developed by matthew-notaro, nalinahuja22, and ClarkChan1
 
 import os
-import subprocess
-
-from moviepy.editor import *
 
 from audio import Audio
-# from video import Video
+from video import Video
+from moviepy.editor import *
 
 # End Imports----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+MIN_CUT_THRESHOLD = 1
+MAX_CUT_THRESHOLD = 31
+
+# End Constants--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Cut:
     def __init__(self, file, i_time, o_time):
@@ -27,8 +30,8 @@ class Timeline:
         self.video_obj = None
 
         # Initialize Cut Thresholds
-        self.min_thr = 1
-        self.max_thr = 31
+        self.min_thr = MIN_CUT_THRESHOLD
+        self.max_thr = MAX_CUT_THRESHOLD
 
         # Load Media
         self.load_media()
@@ -41,7 +44,7 @@ class Timeline:
         self.audio_obj = Audio(self.a_path)
 
         # Load Video Media
-        # self.video_obj = [Video(file) for file in (os.listdir(self.v_path))]
+        self.video_obj = [Video(file) for file in (os.listdir(self.v_path))]
 
     def process_media(self):
         # Process Audio Media
@@ -50,13 +53,6 @@ class Timeline:
         # Process Video Media
         for obj in (self.video_obj):
             (obj).analyze()
-
-    def cut(self):
-        clip1 = VideoFileClip("myvideo.mp4")
-        clip2 = VideoFileClip("myvideo2.mp4").subclip(50,60)
-        clip3 = VideoFileClip("myvideo3.mp4")
-        final_clip = concatenate_videoclips([clip1,clip2,clip3])
-        final_clip.write_videofile("my_concatenation.mp4")
 
     def render(self):
         self.audio_obj.analyze()

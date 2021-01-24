@@ -6,6 +6,7 @@ import cv2
 import imagehash
 
 from PIL import Image
+from moviepy.editor import *
 
 # End Imports----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -20,6 +21,9 @@ class Video:
 
         # Dynamic motion difference average of non-zero hash differences
         self.motion_avg = 0
+
+    def cut(self, ):
+        pass
 
     def analyze(self):
         # Video Frame Stream
