@@ -61,7 +61,7 @@ class Timeline:
             # (obj).analyze()
 
     def render(self):
-        print("timeline: generating sequence...", end = "\r")
+        print("\rtimeline: generating sequence...")
 
         # Clip Sequence
         seq = []
@@ -99,7 +99,6 @@ class Timeline:
                         break
 
             # Append Trimmed Clip To Sequence
-            print(str(0), str(t_delta))
             seq.append(video_clip.cut(0, t_delta))
 
             duration += t_delta

@@ -10,7 +10,7 @@ from collections import deque
 # End Imports----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Distance Between Audio Peaks (ms)
-PEAK_DIST = 250
+PEAK_DIST = 175
 
 # End Constants--------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ class Audio:
         self.peaks = None
 
     def analyze(self):
-        print("audio: processing audio...", end = "\r")
+        print("\raudio: processing audio...")
 
         # Load Audio File
         wf, sr = librosa.load(self.file)
