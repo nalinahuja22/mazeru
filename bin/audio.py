@@ -41,7 +41,4 @@ class Audio:
         # Process Waveform Peaks
         return (list(scipy.signal.find_peaks(wf, distance = min_dist)[0]))
 
-obj = Audio("../media/audio/reminisce.wav")
-print(len(obj.analyze()))
-
 # End Class-------------------------------------------------------------------------------------------------------------------------------------------------------------
