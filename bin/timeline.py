@@ -3,7 +3,7 @@
 import os
 
 from audio import Audio
-from video import Video
+# from video import Video
 
 # End Imports----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -24,19 +24,18 @@ class Timeline:
 
     def load_media(self):
         # Load Audio Media
-        self.audio_obj = [Audio(self.a_path)]
+        self.audio_obj = Audio(self.a_path)
 
         # Load Video Media
-        self.video_obj = [Video(file) for file in (os.listdir(self.v_path))]
+        self.video_obj = [Audio(file) for file in (os.listdir(self.v_path))]
 
     def process_media(self):
         # Process Audio Media
-        for obj in self.audio_obj:
-            obj.analyze()
+        (self.audio_obj).analyze()
 
         # Process Video Media
-        for obj in self.video_obj:
-            obj.analyze()
+        for obj in (self.video_obj):
+            (obj).analyze()
 
     def render(self):
         self.a_obj.analyze()
