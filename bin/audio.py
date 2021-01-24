@@ -1,5 +1,7 @@
 # Developed by matthew-notaro, nalinahuja22, and ClarkChan1
 
+# TODO, high pass filter
+
 import scipy
 import librosa
 
@@ -8,7 +10,7 @@ from collections import deque
 # End Imports----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Distance Between Audio Peaks (ms)
-PEAK_DIST = 50
+PEAK_DIST = 250
 
 # End Constants--------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -24,7 +26,7 @@ class Audio:
         self.peaks = None
 
     def analyze(self):
-        print("starting audio processing...")
+        print("audio: processing audio...", end = "\r")
 
         # Load Audio File
         wf, sr = librosa.load(self.file)
@@ -38,7 +40,7 @@ class Audio:
         # Process Negative Audio Data
         for i in range(len(wf)):
             # Zero Negative Peaks
-            if (wf[i] < 0):
+            if (wf[i] < 0 or wf[i] < 0.05):
                 wf[i] = 0
 
         # Compute Minimum Audio Peak Distance
@@ -47,6 +49,6 @@ class Audio:
         # Process Waveform Peaks
         self.peaks = (list(scipy.signal.find_peaks(wf, distance = min_dist)[0]))
 
-        print("ending audio processing...")
+        print("audio: processed audio    ")
 
 # End Class-------------------------------------------------------------------------------------------------------------------------------------------------------------
