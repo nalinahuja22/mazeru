@@ -10,14 +10,14 @@ def main():
     parser.add_argument("--max_seconds", help="maximum threshold time interval to cut", type=int)
     args = parser.parse_args()
 
-    if args.min_seconds:
-        # set vid_maker.min_seconds to args.min_seconds
-        pass
-    if args.max_seconds:
-        # set vid_maker.max_seconds to args.max_seconds
-        pass
-
     vid_maker = Timeline(args.audio, args.video)
+
+    if args.min_seconds:
+        vid_maker.min_thr = args.min_seconds
+
+    if args.max_seconds:
+        vid_maker.max_thr = args.max_seconds
+
     vid_maker.render()
 
 if __name__ == "__main__":
