@@ -18,16 +18,19 @@ class Audio:
         self.file = file
 
         # Audio Metadata
-        self.sr = None
-        self.fn = None
+        self.sample_rate = None
+        self.frame_count = None
+        self.duration = None
+        self.peaks = None
 
     def analyze(self):
         # Load Audio File
         wf, sr = librosa.load(self.file)
 
-        # Set Audio Metadata
-        self.fn = len(wf)
-        self.sr = sr
+        # Populate Audio Metadata
+        self.frame_count = len(wf)
+        self.sample_rate = sr
+        self.duration = librosa.get_duration(y = wf)
 
         # Process Negative Audio Data
         for i in range(len(wf)):
@@ -39,6 +42,6 @@ class Audio:
         min_dist = (sr // (1000 // PEAK_DIST))
 
         # Process Waveform Peaks
-        return (list(scipy.signal.find_peaks(wf, distance = min_dist)[0]))
+        self.peaks = (list(scipy.signal.find_peaks(wf, distance = min_dist)[0]))
 
 # End Class-------------------------------------------------------------------------------------------------------------------------------------------------------------
