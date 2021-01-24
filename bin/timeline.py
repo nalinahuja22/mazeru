@@ -16,9 +16,8 @@ class Timeline:
         # self.v_obj = Video(v_path)
 
     def render(self):
-        self.a_obj.get_peaks(0, self.a_obj.get_audio_duration())
-        # self.beat_timestamps = self.a_obj.get_beat_timestamps(3, 5)
-        print(len(self.beat_timestamps))
+        self.a_obj.analyze()
+        print(len(self.a_obj.peaks))
 
 obj = Timeline("../media/audio/sensation.wav", None)
 obj.render()
