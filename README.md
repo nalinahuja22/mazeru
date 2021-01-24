@@ -31,3 +31,5 @@ We came to foster a fond appreciation of moviepy and learned a great deal of per
 As for audio processing, we plan to fully implement a high-pass filter to ignore lower peaks during periods of relatively quieter sections of the given song.
 
 As for video processing, we plan to allow for Mazeru itself to splice longer videos into shorter segments broken up by scene changes. We also plan on incorporating auto-resolution-formatting so that each video will be downscaled to the lowest shared resolution.
+
+We will also add a title slide at the end of each video produced by Mazeru if desired.
