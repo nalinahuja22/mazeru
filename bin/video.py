@@ -61,7 +61,3 @@ class Video:
 
             # Extracts next frame 
             success, image = vidObj.read()
-
-obj = Video("../media/video/Aerial Shot Of City.mp4")
-obj.analyze()
-print(obj.break_arr)
