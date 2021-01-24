@@ -20,7 +20,6 @@ class Timeline:
         self.a_path = a_path
         self.v_path = v_path
 
-
         # declare video and audio objects
         self.audio_obj = None
         self.video_obj = None
@@ -40,7 +39,6 @@ class Timeline:
         self.audio_obj = Audio(self.a_path)
 
         # Load Video Media
-
         # self.video_obj = [Video(file) for file in (os.listdir(self.v_path))]
 
     def process_media(self):
@@ -52,11 +50,10 @@ class Timeline:
             (obj).analyze()
 
     def cut(self):
-
+        
 
     def render(self):
         self.audio_obj.analyze()
         print(len(self.audio_obj.peaks))
-
 
 # End Classes----------------------------------------------------------------------------------------------------------------------------------------------------------
