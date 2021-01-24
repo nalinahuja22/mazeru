@@ -22,9 +22,6 @@ class Video:
         # Dynamic motion difference average of non-zero hash differences
         self.motion_avg = 0
 
-    def cut(self, ):
-        pass
-
     def analyze(self):
         # Video Frame Stream
         vidObj = cv2.VideoCapture(self.file)
