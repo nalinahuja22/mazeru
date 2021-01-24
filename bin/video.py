@@ -2,15 +2,19 @@
 
 import os
 import sys
-from PIL import Image
-import imagehash
 import cv2
+import imagehash
+
+from PIL import Image
+
+# End Imports----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Video:
     def __init__(self, file):
+        # Video File Path
         self.file = file
 
-        # Int list contains frames after which there is a cut
+        # Integer list contains frames after which there is a cut
         # Cut between frame 10 and 11, break_arr contains 10
         self.break_arr = []
 
@@ -18,6 +22,7 @@ class Video:
         self.motion_avg = 0
 
     def analyze(self):
+        # Video Frame Stream
         vidObj = cv2.VideoCapture(self.file)
 
         # For motion_avg calcs
@@ -26,6 +31,7 @@ class Video:
 
         # Counter variable
         count = 0
+
         # Checks if frames were extracted
         success = 1
 
@@ -46,8 +52,9 @@ class Video:
 
                 # Calculates % difference and new motion_avg
                 hash_diff = hash0 - hash1
-                if hash_diff >= 1:
 
+                # Ensure Nonzero Hashdiff
+                if hash_diff >= 1:
                     avg_counter = avg_counter + 1
                     avg_sum = avg_sum + hash_diff
                     self.motion_avg = avg_sum / avg_counter
@@ -55,9 +62,11 @@ class Video:
                     # Compares to current motion average
                     if hash_diff >= self.motion_avg + 15:
                         self.break_arr.append(count - 2)
-                    #print("frame: %d" % (count - 2) + "\t" + "hash_diff: %d" % hash_diff + "\t" + "motion_avg: %f" % self.motion_avg)
+
                     # Deletes previous frame so no more than 2 frames are saved at a time
-                    #os.remove("frame%d.jpg" % (count - 2))
+                    os.remove("frame%d.jpg" % (count - 2))
 
             # Extracts next frame
             success, image = vidObj.read()
+
+# End Class------------------------------------------------------------------------------------------------------------------------------------------------------------
