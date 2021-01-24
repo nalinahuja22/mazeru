@@ -30,8 +30,8 @@ class Timeline:
         self.video_obj = None
 
         # Initialize Cut Thresholds
-        self.min_thr = MIN_CUT_THRESHOLD
-        self.max_thr = MAX_CUT_THRESHOLD
+        self.min_cthr = MIN_CUT_THRESHOLD
+        self.max_cthr = MAX_CUT_THRESHOLD
 
         # Load Media
         self.load_media()

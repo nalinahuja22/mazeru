@@ -25,10 +25,9 @@ class Video:
     
     # Returns the subclip of video given starting and ending times
     def cut(self, i_time, o_time):
-        return VideoFileClip(self.file).subclip(i_time, o_time)
+        return (VideoFileClip(self.file).subclip(i_time, o_time))
 
-
-    # Populates break_arr with frames at which the scene changes 
+    # Populates break_arr with frames at which the scene changes
     def analyze(self):
         # Video Frame Stream
         vidObj = cv2.VideoCapture(self.file)
@@ -58,7 +57,7 @@ class Video:
                 hash0 = imagehash.average_hash(Image.open("../media/frames/frame%d.jpg" % (count - 2)))
                 hash1 = imagehash.average_hash(Image.open("../media/frames/frame%d.jpg" % (count - 1)))
 
-                # Calculates % difference 
+                # Calculates % difference
                 hash_diff = hash0 - hash1
 
                 # Ensure Nonzero Hashdiff
