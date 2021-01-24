@@ -18,7 +18,7 @@ class Timeline:
         self.beat_timestamps = None
 
     def render(self):
-        self.beat_timestamps = self.a_obj.get_beat_timestamps(0, self.a_obj.get_audio_duration())
+        self.beat_timestamps = self.a_obj.get_peaks(0, self.a_obj.get_audio_duration())
         # self.beat_timestamps = self.a_obj.get_beat_timestamps(3, 5)
         print(len(self.beat_timestamps))
 

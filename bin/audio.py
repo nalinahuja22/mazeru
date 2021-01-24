@@ -1,39 +1,34 @@
 # Developed by matthew-notaro, nalinahuja22, and ClarkChan1
 
-import os
-import sys
+import scipy
 import librosa
-import librosa.display
-import matplotlib.pyplot as plt
-import numpy as np
+
+from collections import deque
+
+# Distance Between Audio Peaks (ms)
+PEAK_DIST = 250
 
 class Audio:
-    def __init__(self, afile):
+    def __init__(self, file):
         # Audio File Path
-        self.afile = afile
+        self.file = file
 
-        # Audio Analysis
-        self.track = []
+        # Audio Metadata
+        self.sr = None
+        self.fn = None
 
     def analyze(self):
-        self.get_tempo()
-        self.plot_audio(0,2)
+        # Load Audio File
+        wf, sr = librosa.load(self.file)
 
-    def get_tempo(self):
-        # Audio File Duration
-        duration = self.get_audio_duration()
+        # Set Audio Metadata
+        self.fn = len(wf)
+        self.sr = sr
 
-        # Iterate Over Audio
-        for i in range(int(duration)):
-            data, sr = librosa.load(self.afile, offset = i, duration = 1)
-            onset = librosa.onset.onset_strength(data, sr = sr)
-            tempo = librosa.beat.tempo(onset_envelope = onset, sr = sr)
-            self.track.append(tempo[0])
-        print(np.asarray(self.track))
 
     def get_audio_duration(self):
         # Audio File Duration
-        return librosa.get_duration(filename=self.afile)
+        return librosa.get_duration(filename=self.file)
 
     def get_beat_timestamps(self, start_seconds, end_seconds):
         # get data
@@ -48,36 +43,39 @@ class Audio:
         # return beat timestamps
         return time[beats_plp]
 
-    def plot_audio(self, start_seconds, end_seconds):
-        # plot data
-        data, sr = librosa.load(self.afile, offset=start_seconds,duration=end_seconds-start_seconds)
-        time = (np.arange(0,len(data)) / sr) + start_seconds
-        # time = (np.arange(0,len(data)) / sr)
-        fig, ax = plt.subplots(nrows=2, sharex=True)
-        # set up plot for raw audio
-        ax[0].set(title='raw audio')
-        ax[0].plot(time, data)
-        ax[0].set(ylabel="sound amplitude")
+    def get_peaks(self, start_seconds, end_seconds):
+        # Process Negative Audio Data
+        for i in range(len(wf)):
+            # Zero Negative Peaks
+            if (wf[i] < 0):
+                wf[i] = 0
 
-        # set up plot for beat timestamp estimation
-        onset_env = librosa.onset.onset_strength(y=data, sr=sr)
-        pulse = librosa.beat.plp(onset_envelope=onset_env, sr=sr)
-        beats_plp = np.flatnonzero(librosa.util.localmax(pulse))
-        time = librosa.times_like(pulse, sr=sr) + start_seconds
-        # time = librosa.times_like(pulse, sr=sr)
-        ax[1].set(title='estimated beats')
-        ax[1].set(xlabel="time", ylabel="sound amplitude")
-        ax[1].plot(time, librosa.util.normalize(pulse), label='PLP')
-        ax[1].vlines(time[beats_plp], 0, 1, alpha=0.5, color='r', linestyle='--', label='PLP Beats')
-        ax[1].legend()
+        # Compute Minimum Audio Peak Distance
+        min_dist = (sr // (1000 // PEAK_DIST))
 
-        # print beat timestamps
-        print(time[beats_plp])
+        # Process Waveform Peaks
+        return (list(scipy.signal.find_peaks(wf, distance = min_dist)[0]))
 
-        # show the plots
-        plt.show()
 
-# obj = Audio("../media/audio/sensation.wav")
-# obj.analyze()
-# print(obj.get_beat_timestamps(3,5))
-# obj.plot_audio(3,5)
+    # def plot_audio_plp():
+        # # plot data
+        # data, sr = librosa.load(self.afile, offset=start_seconds,duration=end_seconds-start_seconds)
+        # time = (np.arange(0,len(data)) / sr) + start_seconds
+        # # time = (np.arange(0,len(data)) / sr)
+        # fig, ax = plt.subplots(nrows=2, sharex=True)
+        # # set up plot for raw audio
+        # ax[0].set(title='raw audio')
+        # ax[0].plot(time, data)
+        # ax[0].set(ylabel="sound amplitude")
+        #
+        # # set up plot for beat timestamp estimation
+        # onset_env = librosa.onset.onset_strength(y=data, sr=sr)
+        # pulse = librosa.beat.plp(onset_envelope=onset_env, sr=sr)
+        # beats_plp = np.flatnonzero(librosa.util.localmax(pulse))
+        # time = librosa.times_like(pulse, sr=sr) + start_seconds
+        # # time = librosa.times_like(pulse, sr=sr)
+        # ax[1].set(title='estimated beats')
+        # ax[1].set(xlabel="time", ylabel="sound amplitude")
+        # ax[1].plot(time, librosa.util.normalize(pulse), label='PLP')
+        # ax[1].vlines(time[beats_plp], 0, 1, alpha=0.5, color='r', linestyle='--', label='PLP Beats')
+        # ax[1].legend()
