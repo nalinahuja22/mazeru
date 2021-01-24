@@ -1,35 +1,47 @@
 # Developed by matthew-notaro, nalinahuja22, and ClarkChan1
 
-import os
-import sys
+import scipy
 import librosa
-import matplotlib.pyplot as plt
 
-def avg(l):
-    return (sum(l) / len(l))
+from collections import deque
+
+# End Imports----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Distance Between Audio Peaks (ms)
+PEAK_DIST = 250
+
+# End Constants--------------------------------------------------------------------------------------------------------------------------------------------------------
 
 class Audio:
-    def __init__(self, audio_file):
+    def __init__(self, file):
         # Audio File Path
-        self.audio_file = audio_file
+        self.file = file
 
-        # Audio Analysis
-        self.track = []
+        # Audio Metadata
+        self.sr = None
+        self.fn = None
 
     def analyze(self):
-        duration = int(librosa.get_duration(filename = self.audio_file))
+        # Load Audio File
+        wf, sr = librosa.load(self.file)
 
-        l = []
+        # Set Audio Metadata
+        self.fn = len(wf)
+        self.sr = sr
 
-        for i in range(duration):
-            data, sr = librosa.load(self.audio_file, offset = i, duration = 1, mono = False)
-            rms = (librosa.feature.rms(data))[0]
+        # Process Negative Audio Data
+        for i in range(len(wf)):
+            # Zero Negative Peaks
+            if (wf[i] < 0):
+                wf[i] = 0
 
-            l.append(avg(rms))
+        # Compute Minimum Audio Peak Distance
+        min_dist = (sr // (1000 // PEAK_DIST))
 
-        plt.plot(l)
-        plt.show()
-
+        # Process Waveform Peaks
+        return (list(scipy.signal.find_peaks(wf, distance = min_dist)[0]))
 
 obj = Audio("../media/audio/reminisce.wav")
-obj.analyze()
+print(len(obj.analyze()))
+
+# End Class-------------------------------------------------------------------------------------------------------------------------------------------------------------
