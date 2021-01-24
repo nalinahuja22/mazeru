@@ -8,8 +8,9 @@ from timeline import Timeline
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("audio", help="path to audio file")
-    parser.add_argument("video", help="path to directory that contains videos")
+    parser.add_argument("audio_path", help="path to audio file")
+    parser.add_argument("video_path", help="path to directory that contains videos")
+    parser.add_argument("output_path", help="path to where the output file will be stored")
     parser.add_argument("--min_seconds", help="minimum threshold time interval to cut", type=int)
     parser.add_argument("--max_seconds", help="maximum threshold time interval to cut", type=int)
     args = parser.parse_args()
