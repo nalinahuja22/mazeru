@@ -3,7 +3,7 @@
 import os
 
 from audio import Audio
-# from video import Video
+from video import Video
 
 # End Imports----------------------------------------------------------------------------------------------------------------------------------------------------------
 
