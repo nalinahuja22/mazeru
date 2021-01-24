@@ -4,4 +4,6 @@
 
 # mazeru [AUDIO_FILE] [VIDEO_PATH] [OUTPUT_PATH] --min-sec [SECONDS] --max-sec [SECONDS]
 
-command python3 ./bin/main.py ${@}
+# command python3 ./bin/main.py ${@}
+
+command python3 ./bin/main.py ./media/audio/reminisce.wav ./media/video ./render.mp4 --min-sec 2.5

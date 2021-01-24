@@ -14,8 +14,8 @@ def main():
     parser.add_argument("audio_path", help="path to audio file")
     parser.add_argument("video_path", help="path to directory that contains videos")
     parser.add_argument("output_path", help="path to where the output file will be stored")
-    parser.add_argument("--min-seconds", help="minimum threshold time interval to cut", type=int)
-    parser.add_argument("--max-seconds", help="maximum threshold time interval to cut", type=int)
+    parser.add_argument("--min-seconds", help="minimum threshold time interval to cut", type=float)
+    parser.add_argument("--max-seconds", help="maximum threshold time interval to cut", type=float)
 
     # Parse Arguments
     args = parser.parse_args()
