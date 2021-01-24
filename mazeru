@@ -4,7 +4,7 @@
 
 '''
 
-mazeru --audio-file [FILE] --video-path [PATH] --min-sec [FRAMES] --max-sec [FRAMES]
+mazeru --audio-file [FILE] --video-path [PATH] --output-file [FILE] --min-sec [FRAMES] --max-sec [FRAMES]
 
 '''
 
