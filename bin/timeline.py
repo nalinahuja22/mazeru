@@ -14,14 +14,19 @@ class Cut:
         self.o_time = o_time
 
 class Timeline:
-    def __init__(self, a_path, v_path):
+    def __init__(self, a_path, v_path, minfthr, maxfthr):
         # Initialize Media Paths
         self.a_path = a_path
         self.v_path = v_path
 
+
         # declare video and audio objects
         self.audio_obj = None
         self.video_obj = None
+
+        # Initialize Cut Thresholds
+        self.minfthr = minfthr
+        self.maxfthr = maxfthr
 
         # Load Media
         self.load_media()
@@ -31,6 +36,7 @@ class Timeline:
         self.audio_obj = Audio(self.a_path)
 
         # Load Video Media
+
         # self.video_obj = [Video(file) for file in (os.listdir(self.v_path))]
 
     def process_media(self):
@@ -44,5 +50,6 @@ class Timeline:
     def render(self):
         self.audio_obj.analyze()
         print(len(self.audio_obj.peaks))
+
 
 # End Classes----------------------------------------------------------------------------------------------------------------------------------------------------------
