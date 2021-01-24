@@ -8,7 +8,7 @@ from collections import deque
 # End Imports----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 # Distance Between Audio Peaks (ms)
-PEAK_DIST = 250
+PEAK_DIST = 50
 
 # End Constants--------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -24,12 +24,15 @@ class Audio:
         self.peaks = None
 
     def analyze(self):
+        print("starting audio processing...")
+
         # Load Audio File
         wf, sr = librosa.load(self.file)
 
         # Populate Audio Metadata
         self.frame_count = len(wf)
         self.sample_rate = sr
+
         self.duration = librosa.get_duration(y = wf)
 
         # Process Negative Audio Data
@@ -43,5 +46,7 @@ class Audio:
 
         # Process Waveform Peaks
         self.peaks = (list(scipy.signal.find_peaks(wf, distance = min_dist)[0]))
+
+        print("ending audio processing...")
 
 # End Class-------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -21,13 +21,20 @@ class Video:
 
         # Dynamic motion difference average of non-zero hash differences
         self.motion_avg = 0
-
+    
+    
     # Returns the subclip of video given starting and ending times
     def cut(self, i_time, o_time):
         return (VideoFileClip(self.file).subclip(i_time, o_time))
 
+    # Returns duration of clip
+    def get_duration(self):
+        return (VideoFileClip(self.file).duration)
+
     # Populates break_arr with frames at which the scene changes
     def analyze(self):
+        # print("starting video processing...")
+
         # Video Frame Stream
         vidObj = cv2.VideoCapture(self.file)
 
@@ -52,7 +59,7 @@ class Video:
 
             # Compares previous 2 frames
             if count >= 2:
-                # Gets image hashesf for last 2 frames
+                # Gets image hashes for last 2 frames
                 hash0 = imagehash.average_hash(Image.open("../media/frames/frame%d.jpg" % (count - 2)))
                 hash1 = imagehash.average_hash(Image.open("../media/frames/frame%d.jpg" % (count - 1)))
 
@@ -76,5 +83,7 @@ class Video:
 
             # Extracts next frame
             success, image = vidObj.read()
+
+        # print("ending video processing...")
 
 # End Class------------------------------------------------------------------------------------------------------------------------------------------------------------
