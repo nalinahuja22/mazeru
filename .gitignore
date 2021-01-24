@@ -5,5 +5,8 @@
 __pycache__
 
 # Project Files
+*.mp3
+*.mov
+*.mp4
 media
 renders
