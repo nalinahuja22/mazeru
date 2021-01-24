@@ -27,8 +27,14 @@ class Video:
     def cut(self, i_time, o_time):
         return (VideoFileClip(self.file).subclip(i_time, o_time))
 
+    # Returns duration of clip
+    def get_duration(self):
+        return (VideoFileClip(self.file).duration)
+
     # Populates break_arr with frames at which the scene changes
     def analyze(self):
+        # print("starting video processing...")
+
         # Video Frame Stream
         vidObj = cv2.VideoCapture(self.file)
 
@@ -77,5 +83,7 @@ class Video:
 
             # Extracts next frame
             success, image = vidObj.read()
+
+        # print("ending video processing...")
 
 # End Class------------------------------------------------------------------------------------------------------------------------------------------------------------
