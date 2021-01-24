@@ -2,6 +2,6 @@
 
 # Developed by matthew-notaro, nalinahuja22, and ClarkChan1
 
-# mazeru [AUDIO_FILE] [VIDEO_PATH] [OUTPUT_PATH] --min-sec [FRAMES] --max-sec [FRAMES]
+# mazeru [AUDIO_FILE] [VIDEO_PATH] [OUTPUT_PATH] --min-sec [SECONDS] --max-sec [SECONDS]
 
 command python3 ./bin/main.py ${@}
