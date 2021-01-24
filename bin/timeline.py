@@ -55,14 +55,13 @@ class Timeline:
         seq = []
 
         # Sequence Parameters
-        lpeak
-        sr = self.audio_obj.sample_rate
+        lpeak = 0
 
         # Iterate Over Audio Peaks
         for peak in enumerate(self.audio_obj.peaks):
             # Compute Time Values
-            t_end = peak // sr
-            t_start = lpeak // sr
+            t_end = peak // self.audio_obj.sample_rate
+            t_start = lpeak // self.audio_obj.sample_rate
             t_delta = (t_end - t_start)
 
             # Verify Clip Duration
