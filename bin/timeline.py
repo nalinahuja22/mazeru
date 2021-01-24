@@ -1,6 +1,7 @@
 # Developed by matthew-notaro, nalinahuja22, and ClarkChan1
 
 import os
+import random
 
 from audio import Audio
 from video import Video
@@ -39,7 +40,7 @@ class Timeline:
         self.audio_obj = Audio(self.a_path)
 
         # Load Video Media
-        self.video_obj = [Video(file) for file in (os.listdir(self.v_path))]
+        self.video_obj = random.shuffle([Video(file) for file in (os.listdir(self.v_path))])
 
     def process_media(self):
         # Process Audio Media
@@ -50,30 +51,43 @@ class Timeline:
             (obj).analyze()
 
     def render(self):
+        # Clip Sequence
         seq = []
 
-        lpeak = vindex = 0
-
+        # Sequence Parameters
+        lpeak
         sr = self.audio_obj.sample_rate
 
         # Iterate Over Audio Peaks
         for peak in enumerate(self.audio_obj.peaks):
+            # Compute Time Values
+            t_end = peak // sr
+            t_start = lpeak // sr
+            t_delta = (t_end - t_start)
+
+            # Verify Clip Duration
+            if (t_delta < self.min_cthr):
+                continue
+
+            # Video Object
+            video_clip = self.video_obj.pop(0)
+
             # Ensure Clips Exist
-            if (vindex < len(self.video_obj)):
-                clip = self.video_obj[vindex]
+            if (not(video_clip)):
+                break
+            elif (t_delta > video_clip.get_duration()):
+                # Iterate Over Remaining Clips
+                for i in range(1, len(self.video_obj)):
+                    # Optimize Video Clip
+                    if (t_delta <= self.video_obj[i].get_duration()):
+                        video_clip = self.video_obj[i]
+                        break
 
-                clip_end = peak // sr       # in seconds
-                clip_start = lpeak // sr    # in seconds
+            # Append Trimmed Clip To Sequence
+            seq.append(video_clip.cut(0, t_delta))
 
-                if ((clip_end - clip_start) > clip.duration):
-                    clip_end = clip.duration + clip_start
-
-                # Append Trimmed Clip To Sequence
-                seq.append(clip.cut(clip_start, clip_end))
-
-                # Update Parameters
-                lpeak = peak
-                vindex += 1
+            # Update Parameters
+            lpeak = peak
 
         # Render Video
         seq = concatenate_videoclips(seq)

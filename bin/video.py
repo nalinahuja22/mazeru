@@ -26,6 +26,10 @@ class Video:
     def cut(self, i_time, o_time):
         return (VideoFileClip(self.file).subclip(i_time, o_time))
 
+    # Returns duration of clip
+    def get_duration(self):
+        return (VideoFileClip(self.file).duration)
+
     # Populates break_arr with frames at which the scene changes
     def analyze(self):
         # Video Frame Stream
