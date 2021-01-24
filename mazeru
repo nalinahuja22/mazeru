@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Developed by matthew-notaro, nalinahuja22, and ClarkChan1
+
+'''
+
+mazeru --audio-file [FILE] --video-path [PATH] --min-sec [FRAMES] --max-sec [FRAMES]
+
+'''
+
+command python3 ./bin/main.py ${@}
