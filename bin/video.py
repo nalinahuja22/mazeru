@@ -22,6 +22,12 @@ class Video:
         # Dynamic motion difference average of non-zero hash differences
         self.motion_avg = 0
 
+    # Returns the subclip of video given starting and ending times
+    def cut(self, i_time, o_time):
+        return VideoFileClip(self.file).subclip(i_time, o_time)
+
+
+    # Populates break_arr with frames at which the scene changes
     def analyze(self):
         # Video Frame Stream
         vidObj = cv2.VideoCapture(self.file)
@@ -51,11 +57,13 @@ class Video:
                 hash0 = imagehash.average_hash(Image.open("../media/frames/frame%d.jpg" % (count - 2)))
                 hash1 = imagehash.average_hash(Image.open("../media/frames/frame%d.jpg" % (count - 1)))
 
-                # Calculates % difference and new motion_avg
+                # Calculates % difference
                 hash_diff = hash0 - hash1
 
                 # Ensure Nonzero Hashdiff
                 if hash_diff >= 1:
+
+                    # Updates avg_counter and avg_sum and calculates new motion_avg
                     avg_counter = avg_counter + 1
                     avg_sum = avg_sum + hash_diff
                     self.motion_avg = avg_sum / avg_counter
@@ -65,7 +73,7 @@ class Video:
                         self.break_arr.append(count - 2)
 
                     # Deletes previous frame so no more than 2 frames are saved at a time
-                    os.remove("frame%d.jpg" % (count - 2))
+                    os.remove("../media/frames/frame%d.jpg" % (count - 2))
 
             # Extracts next frame
             success, image = vidObj.read()
