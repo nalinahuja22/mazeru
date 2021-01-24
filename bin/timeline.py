@@ -13,17 +13,12 @@ MAX_CUT_THRESHOLD = 31
 
 # End Constants--------------------------------------------------------------------------------------------------------------------------------------------------------
 
-class Cut:
-    def __init__(self, file, i_time, o_time):
-        self.file = file
-        self.i_time = i_time
-        self.o_time = o_time
-
 class Timeline:
-    def __init__(self, a_path, v_path):
+    def __init__(self, a_path, v_path, o_path):
         # Initialize Media Paths
         self.a_path = a_path
         self.v_path = v_path
+        self.o_path = o_path
 
         # declare video and audio objects
         self.audio_obj = None
@@ -55,7 +50,33 @@ class Timeline:
             (obj).analyze()
 
     def render(self):
-        self.audio_obj.analyze()
-        print(len(self.audio_obj.peaks))
+        seq = []
+
+        lpeak = vindex = 0
+
+        sr = self.audio_obj.sample_rate
+
+        # Iterate Over Audio Peaks
+        for peak in enumerate(self.audio_obj.peaks):
+            # Ensure Clips Exist
+            if (vindex < len(self.video_obj)):
+                clip = self.video_obj[vindex]
+
+                clip_end = peak // sr       # in seconds
+                clip_start = lpeak // sr    # in seconds
+
+                if ((clip_end - clip_start) > clip.duration):
+                    clip_end = clip.duration + clip_start
+
+                # Append Trimmed Clip To Sequence
+                seq.append(clip.cut(clip_start, clip_end))
+
+                # Update Parameters
+                lpeak = peak
+                vindex += 1
+
+        # Render Video
+        seq = concatenate_videoclips(seq)
+        seq.write_videofile(self.o_path)
 
 # End Classes----------------------------------------------------------------------------------------------------------------------------------------------------------

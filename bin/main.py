@@ -21,7 +21,7 @@ def main():
     args = parser.parse_args()
 
     # Create Timeline
-    vid_maker = Timeline(args.audio, args.video)
+    vid_maker = Timeline(args.audio_path, args.video_path, args.output_path)
 
     # Setup Timeline Thresholds
     if args.min_seconds:
