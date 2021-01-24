@@ -1,6 +1,7 @@
 # Developed by matthew-notaro, nalinahuja22, and ClarkChan1
 
 import os
+import subprocess
 
 from audio import Audio
 from video import Video
@@ -14,17 +15,20 @@ class Cut:
         self.o_time = o_time
 
 class Timeline:
-    def __init__(self, a_path, v_path, minfthr, maxfthr):
+    def __init__(self, a_path, v_path, min_sec = 1, max_sec = 15):
         # Initialize Media Paths
         self.a_path = a_path
         self.v_path = v_path
 
         # Initialize Cut Thresholds
-        self.minfthr = minfthr
-        self.maxfthr = maxfthr
+        self.min_sec = min_sec
+        self.max_sec = max_sec
 
         # Load Media
         self.load_media()
+
+        # Process Media
+        self.process_media()
 
     def load_media(self):
         # Load Audio Media
@@ -40,6 +44,9 @@ class Timeline:
         # Process Video Media
         for obj in (self.video_obj):
             (obj).analyze()
+
+    def cut(self):
+
 
     def render(self):
 
