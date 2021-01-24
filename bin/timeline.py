@@ -42,7 +42,4 @@ class Timeline:
         self.a_obj.analyze()
         print(len(self.a_obj.peaks))
 
-obj = Timeline("../media/audio/sensation.wav", None)
-obj.render()
-
 # End Classes----------------------------------------------------------------------------------------------------------------------------------------------------------
