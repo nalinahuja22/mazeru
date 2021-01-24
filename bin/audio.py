@@ -77,7 +77,7 @@ class Audio:
         # show the plots
         plt.show()
 
-obj = Audio("../media/audio/sensation.wav")
+# obj = Audio("../media/audio/sensation.wav")
 # obj.analyze()
-obj.get_beat_timestamps(3,5)
+# print(obj.get_beat_timestamps(3,5))
 # obj.plot_audio(3,5)
