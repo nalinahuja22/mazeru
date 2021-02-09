@@ -110,7 +110,8 @@ class Timeline:
 
         # Render Video
         seq = concatenate_videoclips(seq)
-        seq = seq.set_audio(AudioFileClip(self.a_path))
+        combined_audio = CompositeAudioClip([seq.audio, AudioFileClip(self.a_path)])
+        seq = seq.set_audio(combined_audio)
         seq = seq.subclip(0, duration)
         seq.write_videofile(self.o_path)
 
