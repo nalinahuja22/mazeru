@@ -1,0 +1,9 @@
+# System Files
+.DS_Store
+.localized
+
+# Project Files
+*.mp3
+*.mp4
+*.mov
+media
