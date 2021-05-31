@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Developed by matthew-notaro, nalinahuja22, and ClarkChan1
+# Developed by Nalin Ahuja, nalinahuja22
 
-# mazeru [AUDIO_FILE] [VIDEO_PATH] [OUTPUT_PATH] --min-sec [SECONDS] --max-sec [SECONDS]
-
-command python3 ./bin/main.py ${@}
+command python3 ./src/main.py ${@}
