@@ -51,28 +51,34 @@ AUDIO_PEAK_DISTANCE = 150
 
 # End Audio Processing Parameters---------------------------------------------------------------------------------------------------------------------------------------
 
-def __process_audio(obj):
+def __process_audio(audio_obj, video_obj, total_video_time):
+
     # Print Status
-    print(cli.CR + "→ Loading {} ".format(obj.path), end = "", flush = True)
+    print(cli.CR + "→ Loading {} ".format(audio_obj.path), end = "", flush = True)
 
     # Load Audio Frame Data With Native Sample Rate
-    wf, sr = librosa.load(obj.path, sr = None)
+    wf, sr = librosa.load(audio_obj.path, sr = None)
 
     # Absolute Audio Frame Data
     wf = np.abs(wf)
 
     # Set Audio File Object
-    obj.file = editor.AudioFileClip(obj.path, fps = sr)
+    audio_obj.file = editor.AudioFileClip(audio_obj.path, fps = sr)
+
+    # cut the audio file if it is longer than the total_video_time
+    if float((audio_obj.file).duration) > total_video_time:
+        print("audio file is smaller than video")
+        audio_obj.file = audio_obj.file.set_duration(total_video_time)
 
     # Set Audio File Metadata
-    obj.fps = int((obj.file).fps)
-    obj.length = float((obj.file).duration)
+    audio_obj.fps = int((audio_obj.file).fps)
+    audio_obj.length = float((audio_obj.file).duration)
 
     # Calculate Frame Sample Size
-    fs = int(AUDIO_SAMPLE_WIDTH * obj.fps)
+    fs = int(AUDIO_SAMPLE_WIDTH * audio_obj.fps)
 
     # Calculate Audio Frame Total
-    ft = int(((obj.fps * obj.length) // fs) * fs)
+    ft = int(((audio_obj.fps * audio_obj.length) // fs) * fs)
 
     # Initalize Audio Frame Heap
     fh = []
@@ -92,7 +98,7 @@ def __process_audio(obj):
     # Calculate Audio Noise Data
     for i in range(0, ft, fs):
         # Print Status
-        print(cli.CR + "→ Processing {} - {:.1f}% ".format(obj.path, ((i / ft) * 50)), end = "", flush = True)
+        print(cli.CR + "→ Processing {} - {:.1f}% ".format(audio_obj.path, ((i / ft) * 50)), end = "", flush = True)
 
         # Process Audio Frame Sample
         for j in range(fs):
@@ -123,7 +129,7 @@ def __process_audio(obj):
     # Filter Audio Frame Data
     for i in range(len(nc)):
         # Print Status
-        print(cli.CR + "→ Processing {} - {:.1f}% ".format(obj.path, (((i / len(nc)) * 50) + 50)), end = "", flush = True)
+        print(cli.CR + "→ Processing {} - {:.1f}% ".format(audio_obj.path, (((i / len(nc)) * 50) + 50)), end = "", flush = True)
 
         # Process Audio Frame Sample
         for j in range(fs):
@@ -139,10 +145,10 @@ def __process_audio(obj):
                 wf[wfi] = 0
 
     # Print Status
-    print(cli.CR + "→ Processing {} - 100.0% ".format(obj.path), end = "", flush = True)
+    print(cli.CR + "→ Processing {} - 100.0% ".format(audio_obj.path), end = "", flush = True)
 
     # Calculate Audio Peak Frame Distance
-    pd = int(AUDIO_PEAK_DISTANCE * obj.fps)
+    pd = int(AUDIO_PEAK_DISTANCE * audio_obj.fps)
 
     # Get Audio Peak Frames
     pf, _ = signal.find_peaks(wf, distance = int(pd))
@@ -172,13 +178,18 @@ def __process_audio(obj):
             nfi = mnf
 
         # Append Audio Peak
-        peaks.append(Peak(wfi / obj.fps, wf[wfi], nf[nfi]))
+        peaks.append(Peak(wfi / audio_obj.fps, wf[wfi], nf[nfi]))
 
     # Set Audio Peaks
-    obj.peaks = tuple(peaks)
+    audio_obj.peaks = tuple(peaks)
 
+    print("audio object info:")
+    print("audio fps:", audio_obj.fps)
+    print("audio length:", audio_obj.length)
+    print("total_video_time: ", total_video_time)
+    print("audio peaks:", audio_obj.peaks)
     # Print Status
-    print(cli.CR + cli.CL + "→ Processed {}".format(obj.path))
+    print(cli.CR + cli.CL + "→ Processed {}".format(audio_obj.path))
 
     # TESTING ONLY
     # import matplotlib.pyplot as plt

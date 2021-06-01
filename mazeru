@@ -2,4 +2,5 @@
 
 # Developed by Nalin Ahuja, nalinahuja22
 
-command python3 ./src/main.py ${@}
+command python3 ./src/main.py audio/closer.mp3 video out/test.mp4
+# command python3 -v ./src/main.py ${@}

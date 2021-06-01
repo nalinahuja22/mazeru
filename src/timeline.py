@@ -94,6 +94,7 @@ class Timeline:
         # Define Media Objects
         self.audio_obj = None
         self.video_obj = []
+        self.total_video_time = 0
 
         # Import Media
         self.import_media()
@@ -105,7 +106,7 @@ class Timeline:
         self.set_prefs(args)
 
         # Export Media
-        self.export_media()
+        # self.export_media()
 
     def set_prefs(self, args):
         # Initialize Minimum Cut Length Preference
@@ -182,17 +183,7 @@ class Timeline:
         # Print Status
         print("mazeru: Importing media...", end = "", flush = True)
 
-        # Check Audio File Extension
-        if (((self.audio_path).lower()).endswith(AUDIO_FORMATS)):
-            # Import Audio File
-            self.audio_obj = media.Audio(self.audio_path)
-        else:
-            # Get File Extension
-            _, ext = os.path.splitext(self.audio_path)
-
-            # Exit Program
-            sys.exit(cli.CR + "mazeru: Unsupported audio format \"{}\" encountered during import, exiting...".format(str(ext)))
-
+        # process video
         # Check Path Type
         if (os.path.isfile(self.video_path)):
             # Check Video File Extension
@@ -221,21 +212,22 @@ class Timeline:
                 # Exit Program
                 sys.exit(cli.CR + "mazeru: No supported footage found, exiting...")
 
+        # process audio
+        # Check Audio File Extension
+        if (((self.audio_path).lower()).endswith(AUDIO_FORMATS)):
+            # Import Audio File
+            self.audio_obj = media.Audio(self.audio_path)
+        else:
+            # Get File Extension
+            _, ext = os.path.splitext(self.audio_path)
+
+            # Exit Program
+            sys.exit(cli.CR + "mazeru: Unsupported audio format \"{}\" encountered during import, exiting...".format(str(ext)))
+
         # Print Status
         print(cli.CR + cli.CL + "mazeru: Imported media", flush = True)
 
     def process_media(self):
-        # Print Status
-        print("mazeru: Processing audio...", flush = True)
-
-        # Process Audio Media
-        media.process(self.audio_obj)
-
-        # Clear Outputs
-        cli.cl(2)
-
-        # Print Status
-        print(cli.CR + "mazeru: Processed audio", flush = True)
 
         # Print Status
         print("mazeru: Processing video...", flush = True)
@@ -244,12 +236,26 @@ class Timeline:
         for obj in (self.video_obj):
             # Process Video Object
             media.process(obj)
+            self.total_video_time += obj.length
 
         # Clear Outputs
         cli.cl(len(self.video_obj) + 1)
 
         # Print Status
         print(cli.CR + "mazeru: Processed video", flush = True)
+
+
+        # Print Status
+        print("mazeru: Processing audio...", flush = True)
+
+        # Process Audio Media
+        media.process(self.audio_obj, self.video_obj, self.total_video_time)
+
+        # Clear Outputs
+        cli.cl(2)
+
+        # Print Status
+        print(cli.CR + "mazeru: Processed audio", flush = True)
 
     def export_media(self):
         # Print Status

@@ -51,24 +51,32 @@ if __name__ == "__main__":
             # Exit Program
             sys.exit()
 
-    # Run Program
-    try:
-        # Import Timeline Class
-        from timeline import Timeline
 
-        # Create Timeline
-        Timeline(args)
-    except ImportError:
-        # Print Status
-        print(cli.nl(2) + "mazeru: Failed to create timeline, exiting...")
-    except KeyboardInterrupt:
-        # Print Status
-        print(cli.nl(2) + "mazeru: Program interrupted by user, exiting...")
-    except Exception as e:
-        # Print Status
-        print(cli.nl(2) + "mazeru: An unrecoverable error has occurred")
+    from timeline import Timeline
 
-        # Print Error
-        print(e)
+    # Create Timeline
+    Timeline(args)
+    # # Run Program
+    # try:
+    #     # Import Timeline Class
+    #     from timeline import Timeline
+    #
+    #     # Create Timeline
+    #     Timeline(args)
+    # except ImportError:
+    #     # Print Status
+    #     print(cli.nl(2) + "mazeru: Failed to create timeline, exiting...")
+    # except KeyboardInterrupt:
+    #     # Print Status
+    #     print(cli.nl(2) + "mazeru: Program interrupted by user, exiting...")
+    # except Exception as e:
+    #     # Print Status
+    #     print(cli.nl(2) + "mazeru: An unrecoverable error has occurred")
+    #
+    #     # Print Error
+    #     # print(e)
+    #     exc_type, exc_obj, exc_tb = sys.exc_info()
+    #     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+    #     print(exc_type, fname, exc_tb.tb_lineno)
 
 # End Main Function------------------------------------------------------------------------------------------------------------------------------------------------------
