@@ -68,7 +68,7 @@ def __process_audio(audio_obj, video_obj, total_video_time):
     # cut the audio file if it is longer than the total_video_time
     if float((audio_obj.file).duration) > total_video_time:
         print("audio file is smaller than video")
-        audio_obj.file = audio_obj.file.set_duration(total_video_time)
+        audio_obj.file = audio_obj.file.subclip(0,total_video_time)
 
     # Set Audio File Metadata
     audio_obj.fps = int((audio_obj.file).fps)
