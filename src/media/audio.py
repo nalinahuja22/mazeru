@@ -6,6 +6,7 @@ import librosa
 import heapq as hp
 import numpy as np
 
+import os
 from scipy import signal
 from moviepy import editor
 from dataclasses import dataclass
@@ -56,19 +57,40 @@ def __process_audio(audio_obj, video_obj, total_video_time):
     # Print Status
     print(cli.CR + "→ Loading {} ".format(audio_obj.path), end = "", flush = True)
 
+    # Set Audio File Object
+    audio_obj.file = editor.AudioFileClip(audio_obj.path)
+
+    # cut the audio file if it is longer than the total_video_time
+    if float((audio_obj.file).duration) > total_video_time:
+        print("audio file is smaller than video")
+        audio_obj.file = audio_obj.file.subclip(0,total_video_time)
+        # variable that stores the path to the temporary audio folder
+        dir_path = 'temp_audio/'
+
+        # make new temp audio directory if necessary
+        if not os.path.isdir(dir_path):
+            os.mkdir('temp_audio')
+
+        # clear the folder first to erase any previous videos
+        for f in os.listdir(dir_path):
+            os.remove(os.path.join(dir_path, f))
+
+        new_audio_path = os.path.join(dir_path, "cut_audio.wav")
+        print("new audio path: ", new_audio_path)
+
+        # now write the temporary audio file to the folder
+        audio_obj.file.write_audiofile(new_audio_path)
+
+        # now change the audio_obj path and it should make the necessary changes for the code Below
+        audio_obj.path = new_audio_path
+
+
     # Load Audio Frame Data With Native Sample Rate
     wf, sr = librosa.load(audio_obj.path, sr = None)
 
     # Absolute Audio Frame Data
     wf = np.abs(wf)
 
-    # Set Audio File Object
-    audio_obj.file = editor.AudioFileClip(audio_obj.path, fps = sr)
-
-    # cut the audio file if it is longer than the total_video_time
-    if float((audio_obj.file).duration) > total_video_time:
-        print("audio file is smaller than video")
-        audio_obj.file = audio_obj.file.subclip(0,total_video_time)
 
     # Set Audio File Metadata
     audio_obj.fps = int((audio_obj.file).fps)
