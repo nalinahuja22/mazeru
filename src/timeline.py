@@ -274,6 +274,12 @@ class Timeline:
         print(cli.CR + "mazeru: Processed audio", flush = True)
 
     def export_media(self):
+
+        # TODO: I actually believe that because the length of the video and audio are the same, that even if we randomly splice up the audio into peak intervals and then iterate over the video and cut it up by randomly selecting peaks, we can do it
+        # from the front and the back and because the lengths of the video and audio are the same, we should be able to dill all the intervals perfectly
+        # the only concern I have is that if there are more than 1 video, there will be random cuts at the points where we combined the video that we have not accounted for, the video class that Nalin made accounts for this because he divides each
+        # video into specific scenes and splices those scenes together on the fly
+
         # Print Status
         print(cli.CR + "mazeru: Generating clip sequence...", end = "", flush = True)
 
