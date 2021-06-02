@@ -75,7 +75,7 @@ def __process_audio(audio_obj, video_obj, total_video_time):
         for f in os.listdir(dir_path):
             os.remove(os.path.join(dir_path, f))
 
-        new_audio_path = os.path.join(dir_path, "cut_audio.wav")
+        new_audio_path = os.path.join(dir_path, "cut_audio.mp3")
         print("new audio path: ", new_audio_path)
 
         # now write the temporary audio file to the folder

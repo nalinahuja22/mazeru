@@ -95,12 +95,14 @@ class Timeline:
         self.audio_obj = None
         self.video_obj = []
         self.total_video_time = 0
+        self.combined_video = None
 
         # Import Media
         self.import_media()
 
         # Process Media
         self.process_media()
+        # print("length of self.combined_video: ", float(self.combined_video.duration))
 
         # Set Preferences
         self.set_prefs(args)
@@ -233,17 +235,31 @@ class Timeline:
         print("mazeru: Processing video...", flush = True)
 
         # Process Video Media
+        # create a list of VideoFileClips
+        videos = []
+        # loop over all video objects and create VideoFileClips and concatenate them together
         for obj in (self.video_obj):
-            # Process Video Object
+            # create VideoFileClip
+            video = editor.VideoFileClip(obj.path)
+            # concatenate it to the list
+            videos.append(video)
+            # increment total video time
+            self.total_video_time += float(video.duration)
+            # still process the video object so the preferences can be set
             media.process(obj)
-            self.total_video_time += obj.length
+        # for obj in (self.video_obj):
+        #     # Process Video Object
+        #     media.process(obj)
+        #     self.total_video_time += obj.length
+
+        # concatenate all the videos together
+        self.combined_video = editor.concatenate_videoclips(videos)
 
         # Clear Outputs
         cli.cl(len(self.video_obj) + 1)
 
         # Print Status
         print(cli.CR + "mazeru: Processed video", flush = True)
-
 
         # Print Status
         print("mazeru: Processing audio...", flush = True)

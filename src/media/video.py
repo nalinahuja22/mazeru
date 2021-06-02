@@ -222,6 +222,9 @@ def __process_video(obj):
     #     print("{} → {}".format(i, scene))
     # plt.plot(fd)
     # plt.show()
+    print("size: ", obj.size)
+    print("length: ", obj.length)
+    print("scenes list: ", obj.scenes)
 
     # Return Success
     return (True)
